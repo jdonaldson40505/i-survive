@@ -1,44 +1,30 @@
 <!DOCTYPE html>
-<script src='messaging.js'></script>
-<style>
-    #messageContainer {
-        background-color: rgb(54,54,54);
-        width: 350px;
-        height: 700px;
-        overflow: auto;
-        text-align: justify;
-        padding: 20px;
-    }
+<link rel='stylesheet' href='messenger.css'>
+<script src='messenger.js'></script>
 
-    .message {
-        background-color: lightcoral;
-        border-radius: 15px;
-        padding: 10px;
-        padding-bottom: 1px;
-        text-align: left;
-        vertical-align: middle;
-        width: 40%;
-    }
+<body>
 
-    .local {
-        align-items: right;
-    }
+    <div class="sidebar">
+        <h1 class='logo'>I-Survive</h1>
+        <h3 style='padding-left:30px;'>Resources:</h3>
+        <div class='resource'>
+            <p>National Hotline: 800-273-8255</p>
+            <a class="hotlineButton" href="https://suicidepreventionlifeline.org/talk-to-someone-now/">Talk with someone now</a>
+        </div>
+    </div>
 
-    .user {
-        text-justify: right;
-        text-align: right;
-        vertical-align: bottom;
-        
-        font-size: smaller;
-    }
-</style>
+    <!-- Blank container that will be filled with messages. -->
+    <div id="messageContainer">
+    </div>
+    
+    <!-- "Send Message" bar. -->
+    <form id="messageInput">
+        <input class='textbox' type="text" id="messageBox" placeholder='Type your message here.'>
+        <button  type="button" onclick="sendMessage()">SEND</button>
+    </form>
+    <!--
+    <input type="checkbox" id="localUser">
+    -->
 
-<!-- Blank container that will be filled with messages. -->
-<div id="messageContainer">
-</div>
 
-<!-- "Send Message" bar. -->
-<form id="messageInput" style="background-color: rgb(59,59,59); width: 390px;">
-    <input type="text" id="messageBox">
-    <button type="button" onclick="sendMessage()">SEND</button>
-</form>
+</body>
