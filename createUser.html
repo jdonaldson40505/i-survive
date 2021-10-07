@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>Register</title>
-        <link rel = "stylesheet" href="styleSheet.css">
+        <link rel = "stylesheet" href="createUser.css">
         <script type="module" src="/javascripts/firebase.js"></script>
     </head>
     <body>
@@ -22,6 +22,11 @@
                 <button id="cancel" class="cancelbtn" type="button" onclick="goHome()">Cancel</button>
             </div>
         </form>
-        <p id="demo"></p>
+        <script>
+            function goHome()
+            {
+                location.href='Hackathonn index.html'   
+            }
+        </script>
     </body>
 </html>

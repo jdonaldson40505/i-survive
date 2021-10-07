@@ -1,38 +1,10 @@
 <!DOCTYPE html>
+<html>
+<head>
 <script src='messaging.js'></script>
-<style>
-    #messageContainer {
-        background-color: rgb(54,54,54);
-        width: 350px;
-        height: 700px;
-        overflow: auto;
-        text-align: justify;
-        padding: 20px;
-    }
-
-    .message {
-        background-color: lightcoral;
-        border-radius: 15px;
-        padding: 10px;
-        padding-bottom: 1px;
-        text-align: left;
-        vertical-align: middle;
-        width: 40%;
-    }
-
-    .local {
-        align-items: right;
-    }
-
-    .user {
-        text-justify: right;
-        text-align: right;
-        vertical-align: bottom;
-        
-        font-size: smaller;
-    }
-</style>
-
+<script type="module" src="../javascripts/firebase.js"></script>
+</head>
+<body>
 <!-- Blank container that will be filled with messages. -->
 <div id="messageContainer">
 </div>
@@ -42,3 +14,5 @@
     <input type="text" id="messageBox">
     <button type="button" onclick="sendMessage()">SEND</button>
 </form>
+</body>
+</html>

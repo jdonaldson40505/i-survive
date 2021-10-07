@@ -1,76 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="hackathonn_index.css">
+    <link rel="stylesheet" href="createUser.css">
+    <script type="module" src="/javascripts/firebase.js"></script>
 <title>Welcome to Project</title>
-
-<style>
-
-body {
-  background-color: darkgrey;
-}
-
-.welcomebanner {
-    background-color: rgb(76, 100, 165);
-    padding: 10%;
-    height: auto;
-    width:auto;
-    border: 4px solid green;
-    left:0;
-    right:100%;
-    text-align: center;
-    margin:none;
-
-
-}
-
-.indexbox {
-    background-color: lightgray;
-  color: white;
-  border: 2px solid black;
-  width: 50%;
-  padding: 1%;
-  text-align: center;
-  float: none;
-  margin:auto;
-
-}
-.button2 {
-  background-color: blue;
-  border: none;
-  color: white;
-  padding: 16px 32px;
-  text-align: center;
-  font-size: 16px;
-  margin: 4px 2px;
-  opacity: 0.6;
-  transition: 0.3s;
-  display: inline-block;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.button2:hover {opacity: 1}
-
-.button1 {
-  background-color: blue;
-  border: none;
-  color: white;
-  padding: 16px 32px;
-  text-align: center;
-  font-size: 16px;
-  margin: 4px 2px;
-  opacity: 0.6;
-  transition: 0.3s;
-  display: inline-block;
-  text-decoration: none;
-  cursor: pointer;
-}
-.button1:hover {opacity: 1}
-
-
-</style>
-
 </head>
 <body>
 
@@ -82,16 +16,40 @@ body {
 <div class="indexbox">
     <h1>Start Here</h1>
 
-    <button onclick="window.location.href='https://sign_in.com';" class="button1">
+    <button onclick="openModal()" class="button1">
         Sign In!
       </button>
       <div class="or"><p>Or</p></div>
 <button onClick= "location.href='createUser.html'" class="button2">
     Create an Account!
   </button>
-
 </div>
 
-
+<div id="popup" class='modal'>
+  <h2>Sign In</h2>
+  <form class="modal_content">
+    <div>
+      <hr>
+        <label for="email"><b>Email</b></label>
+        <input id= 'email'class='textInput' type="text" placeholder="Enter Email ex:Email@gmail.com" required>
+        <label for="email"><b>Password</b></label>
+        <input id= 'password' class='textInput' type="password" placeholder="password" required>
+    </div>
+    <div class = 'wrapper'id= 'buttonWrapper'>
+        <button id="btn-register" class="signupbtn" type="button">Submit</button>
+        <button id="cancel" class="cancelbtn" type="button" onclick="closeModal()">Back</button>
+    </div>
+  </form>
+  <script>
+    function openModal()
+    {
+      document.getElementById('popup').style.display='block';
+    }
+    function closeModal()
+    {
+      document.getElementById('popup').style.display='None'
+    }
+  </script>
+</div>
 </body>
 </html>

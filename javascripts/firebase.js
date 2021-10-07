@@ -2,6 +2,8 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js";
+
 const firebaseConfig = {
   apiKey: "AIzaSyCDrtrzP-Tf-VkA4aKFQjIkUcNYduxZmJQ",
   authDomain: "isurvive-c513b.firebaseapp.com",
@@ -17,6 +19,7 @@ const firebaseConfig = {
 //   initialize Firiebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
+const database = getDatabase(app);
 
 //handle user signup
 // get signup form
@@ -31,6 +34,7 @@ signupBtn.addEventListener("click", (e)=>{
       if(password == cPassword)
       {
         createUserWithEmailAndPassword(auth,email,password);
+        document.location.href = 'home.html';
       }
       else{
         alert('passwords do not match');

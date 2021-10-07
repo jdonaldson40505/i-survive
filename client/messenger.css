@@ -1,0 +1,30 @@
+#messageContainer {
+    background-color: rgb(54,54,54);
+    width: 350px;
+    height: 700px;
+    overflow: auto;
+    text-align: justify;
+    padding: 20px;
+}
+
+.message {
+    background-color: lightcoral;
+    border-radius: 15px;
+    padding: 10px;
+    padding-bottom: 1px;
+    text-align: left;
+    vertical-align: middle;
+    width: 40%;
+}
+
+.local {
+    align-items: right;
+}
+
+.user {
+    text-justify: right;
+    text-align: right;
+    vertical-align: bottom;
+    
+    font-size: smaller;
+}

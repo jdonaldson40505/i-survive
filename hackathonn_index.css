@@ -1,0 +1,61 @@
+body {
+    background-color: darkgrey;
+  }
+  
+  .welcomebanner {
+      background-color: rgb(76, 100, 165);
+      padding: 10%;
+      height: auto;
+      width:auto;
+      border: 4px solid green;
+      left:0;
+      right:100%;
+      text-align: center;
+      margin:none;
+  
+  
+  }
+  
+  .indexbox {
+      background-color: lightgray;
+    color: white;
+    border: 2px solid black;
+    width: 50%;
+    padding: 1%;
+    text-align: center;
+    float: none;
+    margin:auto;
+  
+  }
+  .button2 {
+    background-color: blue;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    font-size: 16px;
+    margin: 4px 2px;
+    opacity: 0.6;
+    transition: 0.3s;
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .button2:hover {opacity: 1}
+  
+  .button1 {
+    background-color: blue;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    font-size: 16px;
+    margin: 4px 2px;
+    opacity: 0.6;
+    transition: 0.3s;
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .button1:hover {opacity: 1}
