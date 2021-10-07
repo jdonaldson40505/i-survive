@@ -1,18 +1,28 @@
 <!DOCTYPE html>
-<html>
-<head>
-<script src='messaging.js'></script>
-<script type="module" src="../javascripts/firebase.js"></script>
-</head>
-<body>
-<!-- Blank container that will be filled with messages. -->
-<div id="messageContainer">
-</div>
+<link rel='stylesheet' href='messenger.css'>
+<script src='messenger.js'></script>
 
-<!-- "Send Message" bar. -->
-<form id="messageInput" style="background-color: rgb(59,59,59); width: 390px;">
-    <input type="text" id="messageBox">
-    <button type="button" onclick="sendMessage()">SEND</button>
-</form>
+<body>
+
+    <div class="sidebar">
+        <h1 class='logo'>I-Survive</h1>
+        <h3 style='padding-left:30px;'>Resources:</h3>
+        <div class='resource'>
+            <p>National Hotline: 800-273-8255</p>
+            <a class="hotlineButton" href="https://suicidepreventionlifeline.org/talk-to-someone-now/">Talk with someone now</a>
+        </div>
+    </div>
+
+    <!-- Blank container that will be filled with messages. -->
+    <div id="messageContainer">
+    </div>
+    
+    <!-- "Send Message" bar. -->
+    <form id="messageInput">
+        <input class='textbox' type="text" id="messageBox" placeholder='Type your message here.'>
+        <button  type="button" onclick="sendMessage()">SEND</button>
+    </form>
+    <!--
+    <input type="checkbox" id="localUser">
+    -->
 </body>
-</html>
