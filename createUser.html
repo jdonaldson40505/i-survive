@@ -3,10 +3,7 @@
     <head>
         <title>Register</title>
         <link rel = "stylesheet" href="styleSheet.css">
-        <!-- <script type="module">
-        import { initializeApp } from 'firebase/app';
-        import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-        </script> -->
+        <script type="module" src="/javascripts/firebase.js"></script>
     </head>
     <body>
         <h2 class="header">Get Started</h2>
@@ -21,56 +18,10 @@
                 <input id="cpassword" class='textInput' type="password" placeholder="confirm password" required>
             </div>
             <div class = 'wrapper'id= 'buttonWrapper'>
-                <button id="btn-register" class="signupbtn" type="button" >Submit</button>
+                <button id="btn-register" class="signupbtn" type="button">Submit</button>
                 <button id="cancel" class="cancelbtn" type="button" onclick="goHome()">Cancel</button>
             </div>
         </form>
         <p id="demo"></p>
-
-
-        <script src="/javascripts/firebase.js"></script>
-        <script>
-            
-            // const firebaseConfig = {
-            //     apiKey: "AIzaSyBGgLKR3AVxxw0P6KLiySpve8K6Y7aBrYU",
-            //     authDomain: "i-survive-bebd8.firebaseapp.com",
-            //     projectId: "i-survive-bebd8",
-            //     storageBucket: "i-survive-bebd8.appspot.com",
-            //     messagingSenderId: "408996964951",
-            //     appId: "1:408996964951:web:ca90980396dc376c7b5112",
-            //     measurementId: "G-B3668HE15F"
-            // };
-
-            // const app = initializeApp(firebaseConfig);
-            // const auth = getAuth();
-            // firebaseConfig.authDomain.Auth.Persistence.LOCAL;
-            // function saveNGo(){
-                // alert("the button was clicked");
-                // document.getElementById("demo").innerText = 'made it here';
-            //     var email = document.getElementById("email").value;
-            //     var password = document.getElementById("password").value;
-            //     var cPassword = document.getElementById("cpassword").value;
-                
-            //     // document.getElementById("demo").innerText = cPassword;
-            //     if (email != "" && password != "" && cPassword != "" )
-            //     {
-            //         // alert(password,cPassword);
-            //         // if(password == cPassword)
-            //         // {
-            //             auth.createUserWithEmailAndPassword(auth,email,password).then(cred =>{
-            //                 console.log(cred)
-            //             });
-            //             // alert('here i am');
-            //         // }
-            //     }
-            // }
-            // function goHome(){
-            //     location.href="home.html"
-            // }
-            // firebase.auth().onAuthStateChanged(function(user)
-            // {
-            //         window.location.href= "createAccount.html";
-            // });
-        </script>
     </body>
 </html>
