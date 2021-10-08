@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<link rel='stylesheet' href='messenger.css'>
-<script src='messenger.js'></script>
-
+<html>
 <head>
+<link rel='stylesheet' href='messenger.css'>
+<script type="module" src='./messenger.js'></script>
     <title>I-Survive Chat.</title>
     <meta charset="utf-8">
-    <script type='module' src='../javascripts/firebase.js'></script>
+    <!-- <script type="module" src='./messenger.js'></script> -->
 </head>
 
 <body>
     <div class="sidebar">
         <h1 class='logo'>I-Survive</h1>
+        <div id=signout>
+            <button id="signOut">Sign Out</button>
+        </div>
         <li id='resourceList'>
             <h3 style='padding-left:30px;'>Resources:</h3>
             <div class='resource'>
@@ -27,9 +30,10 @@
     <!-- "Send Message" bar. -->
     <form id="messageInput">
         <input class='textbox' type="text" id="messageBox" placeholder='Type your message here.'>
-        <button  id='sendButton' type="button" onclick="sendMessage()">SEND</button>
+        <button  id='sendButton' type="button">SEND</button>
     </form>
     <!--
     <input type="checkbox" id="localUser">
     -->
 </body>
+</html>

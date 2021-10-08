@@ -1,8 +1,8 @@
 // import firebase libraries
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js";
-import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js";
+import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCDrtrzP-Tf-VkA4aKFQjIkUcNYduxZmJQ",
@@ -21,8 +21,10 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const database = getDatabase(app);
 
+
 //handle user signup
 // get signup form
+
 const signupForm = document.querySelector('#signupForm');
 const signupBtn = document.querySelector('#btn-register');
 signupBtn.addEventListener("click", (e)=>{
@@ -34,7 +36,8 @@ signupBtn.addEventListener("click", (e)=>{
       if(password == cPassword)
       {
         createUserWithEmailAndPassword(auth,email,password);
-        document.location.href = 'home.html';
+        // const user = userCredential.user;
+        document.location.href = 'client/messenger.html';
       }
       else{
         alert('passwords do not match');
@@ -45,3 +48,28 @@ signupBtn.addEventListener("click", (e)=>{
       alert('one or more fields need to be filled out.');
     }
 });
+
+
+
+//save user in database
+// var groupId = 1;
+// // function send_message()
+// // {
+// const messageBtn = document.querySelector('#sendButton');
+// messageBtn.addEventListener("click", (b)=>{
+//   alert("here I am");
+//   const message = document.querySelector('#messageBox').value;
+//   const db = getDatabase();
+//   set(ref(db, 'group/messages'), {
+//     'message': message,
+//     'author': "don",
+//     'messageId': 2,
+//     'timestamp': "yesterday" 
+//   });
+// })
+// })
+
+
+//get messages
+
+//get users for group
