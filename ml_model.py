@@ -104,8 +104,9 @@ enc = enc.replace(np.nan, 0)
 
 # %%
 # Model--can be modified as needed
-model = KMeans(n_clusters=8)
-result = model.fit_predict(enc)
-enc['Cluster'] = result
+classifier = KMeans(n_clusters=8)
+model = classifier.fit(enc)
 
 # %%
+
+enc['Cluster'] = model
