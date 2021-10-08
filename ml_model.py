@@ -17,7 +17,7 @@ for i in range(21, 154):
     dating = dating.drop(columns=to_delete)
 # %%
 # Drops all unnecessary columns
-dating = dating.drop(columns=['income', 'last_online', 'location', 'sign', 'smokes', 'body_type', 'status'])
+dating = dating.drop(columns=['height', 'pets', 'income', 'last_online', 'location', 'sign', 'smokes', 'body_type', 'status'])
 # %%
 dating = dating.replace({np.nan: 0, -1: 0})
 # %%
