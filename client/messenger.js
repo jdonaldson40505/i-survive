@@ -2,6 +2,15 @@
  * All functions related to the messaging functionality. 
  */
 
+document.getElementById('sendButton').addEventListener('keydown', (e)=>
+{
+    if (Event.code === 'Enter')
+    {
+        sendMessage();
+    }
+}
+
+
 /**
  * Loads messages from JSON objects into chat box.
  * @param {JSON[]} messageList 

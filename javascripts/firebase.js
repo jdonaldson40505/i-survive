@@ -1,17 +1,17 @@
 // import firebase libraries
-{/* <script type="module" src="firebase.js"></script> */}
 
-import { initializeApp } from "../node_modules/firebase/app";
-import { getAuth, createUserWithEmailAndPassword } from "../node_modules/firebase/auth";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js";
+
 const firebaseConfig = {
-    apiKey: "AIzaSyBGgLKR3AVxxw0P6KLiySpve8K6Y7aBrYU",
-    authDomain: "i-survive-bebd8.firebaseapp.com",
-    projectId: "i-survive-bebd8",
-    storageBucket: "i-survive-bebd8.appspot.com",
-    messagingSenderId: "408996964951",
-    appId: "1:408996964951:web:ca90980396dc376c7b5112",
-    measurementId: "G-B3668HE15F"
-  };
+  apiKey: "AIzaSyCDrtrzP-Tf-VkA4aKFQjIkUcNYduxZmJQ",
+  authDomain: "isurvive-c513b.firebaseapp.com",
+  projectId: "isurvive-c513b",
+  storageBucket: "isurvive-c513b.appspot.com",
+  messagingSenderId: "251409467344",
+  appId: "1:251409467344:web:759d25ce597d233620dbd5"
+};
 
  
 
@@ -19,33 +19,29 @@ const firebaseConfig = {
 //   initialize Firiebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
+const database = getDatabase(app);
 
+//handle user signup
 // get signup form
 const signupForm = document.querySelector('#signupForm');
-// const signupBtn = document.querySelector('#btn-register');
-signupForm.addEventListener('submit', (e)=>{
-    alert('i am here');
+const signupBtn = document.querySelector('#btn-register');
+signupBtn.addEventListener("click", (e)=>{
     const email = signupForm['email'].value;
     const password = signupForm['password'].value;
     const cPassword = signupForm['cpassword'].value;
-    console.log(email,password,cPassword);
-})
-// $("#cancel").click(function(){
-//     location.href="home.html"
-// });
-
-// $("#btn-register").click(function()
-// {
-//     alert("the button was clicked");
-//     var email = $('#email').value;
-//     var password = $('#password').value;
-//     var cPassword = $('#cpassword').value;
-
-//     if (email != "" && password != "" && cPassword != "" )
-//     {
-//         if(password == cPassword)
-//         {
-//             createUserWithEmailAndPassword(auth, email,password).then();
-//         }
-//     }
-// });
+    if(email != "" && password != "" && cPassword != "")
+    {
+      if(password == cPassword)
+      {
+        createUserWithEmailAndPassword(auth,email,password);
+        document.location.href = 'home.html';
+      }
+      else{
+        alert('passwords do not match');
+      }  
+    }  
+    else
+    {
+      alert('one or more fields need to be filled out.');
+    }
+});
