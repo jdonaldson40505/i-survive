@@ -80,10 +80,9 @@ drugs = (dating.drugs
     .astype('float'))
 # %%
 age = (dating.age.str.replace('st teachers; the powerfully humble', '0').astype('float'))
-height = (dating.height.str.replace(' and community-still open to whatever is true\).  in the friend department', '0').astype('float'))
 # %%
 # Drops columns to be added back in after one-hot encoding
-dating = dating.drop(columns = ['drugs', 'orientation', 'age', 'height'])
+dating = dating.drop(columns = ['drugs', 'orientation', 'age'])
 # %%
 enc = pd.get_dummies(dating)
 print(enc)
@@ -91,7 +90,6 @@ print(enc)
 enc.head(20)
 # %%
 enc = enc.assign(age = age)
-enc = enc.assign(height = height)
 enc = enc.assign(drugs = drugs)
 enc = enc.assign(orientation = orientation)
 enc = enc.replace(np.nan, 0)
