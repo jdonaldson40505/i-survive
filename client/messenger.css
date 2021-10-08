@@ -68,15 +68,21 @@ body {
     text-align: center;
 }
 
+#resourceList {
+    position: absolute;
+    bottom: 5%;
+}
+
 .hotlineButton {
-    background-color: #d6065dee !important;
+    background-color: #c91b18;/**#DD1C1A;/**#d6065dee !important;*/
     color:black;
+    text-decoration: none;
     border-radius: 5px;
     padding: 6px 18px;
 }
 
 .sidebar {
-    background-color: rgb(3, 123, 163);
+    background-color: #125E8a;/**rgb(3, 123, 163);*/
     height: 95%;
     width: 20%;
     position: fixed;

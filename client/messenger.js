@@ -8,7 +8,7 @@ document.getElementById('sendButton').addEventListener('keydown', (e)=>
     {
         sendMessage();
     }
-}
+});
 
 
 /**
