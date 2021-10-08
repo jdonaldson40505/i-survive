@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="hackathonn_index.css">
     <link rel="stylesheet" href="createUser.css">
-    <script type="module" src="/javascripts/firebase.js"></script>
+    <script type="module" src="/javascripts/signIn.js"></script>
 <title>Welcome to Project</title>
 </head>
 <body>
@@ -27,13 +27,13 @@
 
 <div id="popup" class='modal'>
   <h2>Sign In</h2>
-  <form class="modal_content">
+  <form id='Modal_form' class="modal_content">
     <div>
       <hr>
         <label for="email"><b>Email</b></label>
-        <input id= 'email'class='textInput' type="text" placeholder="Enter Email ex:Email@gmail.com" required>
+        <input id='email' class='textInput' type="text" placeholder="Enter Email ex:Email@gmail.com" required>
         <label for="email"><b>Password</b></label>
-        <input id= 'password' class='textInput' type="password" placeholder="password" required>
+        <input id='password' class='textInput' type="password" placeholder="password" required>
     </div>
     <div class = 'wrapper'id= 'buttonWrapper'>
         <button id="btn-register" class="signupbtn" type="button">Submit</button>

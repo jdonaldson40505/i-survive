@@ -1,5 +1,6 @@
 body {
     background-color: rgb(54,54,54);
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 #messageContainer {
@@ -8,7 +9,7 @@ body {
     overflow: auto;
     text-align: justify;
     padding: 20px;
-    width:80%;
+    width:75%;
 
     position: absolute;
     left:20%;
@@ -24,16 +25,13 @@ body {
     left:20%;
 }
 
-/*
-.messenger {
-    width: 75%;
-    height: 100%;
-    position:absolute;
-    left:20%;
-}*/
+.spacer {
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
 
 .message {
-    background-color: lightcoral;
+    background-color: rgb(75, 153, 59);
     border-radius: 15px;
     padding: 10px;
     padding-bottom: 1px;
@@ -56,27 +54,41 @@ body {
     width:92%; 
 }
 
+#sendButton {
+    background-color: rgb(75, 153, 59);
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 16px;
+}
+
 .logo {
     text-align: center;
 }
 
+#resourceList {
+    position: absolute;
+    bottom: 5%;
+}
+
 .hotlineButton {
-    background-color: #d6065dee !important;
+    background-color: #c91b18;/**#DD1C1A;/**#d6065dee !important;*/
     color:black;
+    text-decoration: none;
     border-radius: 5px;
-   
-    font-family: 'Source Sans Pro', sans-serif;
     padding: 6px 18px;
 }
 
 .sidebar {
+    background-color: #125E8a;/**rgb(3, 123, 163);*/
     height: 95%;
     width: 20%;
     position: fixed;
     left: 0;
     top: 0;
     padding-top: 40px;
-    background-color: rgb(0, 89, 119);
     }
     
 .sidebar div {
