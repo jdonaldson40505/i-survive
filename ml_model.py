@@ -33,7 +33,7 @@ for response in dating.orientation:
         pass
 
 print(response_type_orientation)
-
+# %%
 response_type_drugs = []
 for response in dating.drugs:
     try:
@@ -45,7 +45,7 @@ for response in dating.drugs:
         pass
 
 print(response_type_drugs)
-
+# %%
 response_type_age = []
 for response in dating.age:
     try:
@@ -57,18 +57,13 @@ for response in dating.age:
         pass
 
 print(response_type_age)
+# %%
+response_type_kids = []
+for response in dating.offspring:
+    if response not in response_type_kids:
+        response_type_kids.append(response)
 
-response_type_height = []
-for response in dating.height:
-    try:
-        if response == 'nan' or response == '':
-            pass
-        elif response not in response_type_height:
-            response_type_height.append(response)
-    except:
-        pass
-
-print(response_type_height)
+print(response_type_kids)
 # %%
 orientation = (dating.orientation
     .str.replace('straight', '1')
