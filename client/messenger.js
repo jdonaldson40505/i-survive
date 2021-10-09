@@ -1,60 +1,91 @@
 /**
  * All functions related to the messaging functionality. 
  */
-//  import { get } from "http";
+//import { get } from "http";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
- import { getAuth, signOut} from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js";
- import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js";
- 
- const firebaseConfig = {
-   apiKey: "AIzaSyCDrtrzP-Tf-VkA4aKFQjIkUcNYduxZmJQ",
-   authDomain: "isurvive-c513b.firebaseapp.com",
-   projectId: "isurvive-c513b",
-   storageBucket: "isurvive-c513b.appspot.com",
-   messagingSenderId: "251409467344",
-   appId: "1:251409467344:web:759d25ce597d233620dbd5"
- };
- 
+import { getAuth, signOut} from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyCDrtrzP-Tf-VkA4aKFQjIkUcNYduxZmJQ",
+authDomain: "isurvive-c513b.firebaseapp.com",
+projectId: "isurvive-c513b",
+storageBucket: "isurvive-c513b.appspot.com",
+messagingSenderId: "251409467344",
+appId: "1:251409467344:web:759d25ce597d233620dbd5"
+};
   
  
  
- //   initialize Firiebase
- const app = initializeApp(firebaseConfig);
- const auth = getAuth();
-//  const userId = auth.currentUser.uid;
- const database = getDatabase(app);
+//   initialize Firiebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+//const userId = auth.currentUser.uid;
+const database = getDatabase(app);
 
- //get user info 
-//  const dbref = ref(getDatabase());
-//  const name = setProfileInfo('name');
-//  const groupName = setProfileInfo('groupName');
-//  function setProfileInfo(item){
-//  get(child(dbRef, `users/` + userId + "/" + item)).then((snapshot) => {
-//     if (snapshot.exists()) {
-//       return index = snapshot.val();
-//     } else {
-//       console.log("No data available");
-//     }
-//   }).catch((error) => {
-//     console.error(error);
-//   });
+// get user info 
+// const dbref = ref(getDatabase());
+// const name = setProfileInfo('name');
+const groupName = 0;//setProfileInfo('groupName');
+// function setProfileInfo(item){
+// 	get(child(dbref, `users/` + userId + "/" + item)).then((snapshot) => {
+// 		if (snapshot.exists()) {
+// 			return index = snapshot.val();
+// 		} else {
+// 			console.log("No data available");
+// 		}
+// 	}).catch((error) => {
+// 	console.error(error);
+// 	});
 // }
 
-//log out user.
+// log out user.
 const signout = document.querySelector('#signOut');
 signout.addEventListener('click', (e)=>{
-    auth.signOut();
-    document.location.href='../Hackathonn index.html';
+   auth.signOut();
+   document.location.href='../Hackathonn index.html';
 })
 
 
-//set listener for message count
-// const db = getDatabase();
-// messageCount = ref(db, 'messages/' + groupName + '/message count');
-// onValue(starCountRef, (snapshot) => {
-//   const data = snapshot.val();
-//   updateStarCount(postElement, data);
-// });
+
+
+// set listener for message count
+const db = getDatabase(app);
+var messageCountPath = ref(db, 'messages/' + groupName + '/message count');
+onValue(messageCountPath, (snapshot) => {
+	alert(snapshot.val())
+	var messageCount = snapshot.val();
+	if (messageCount > 0) {
+		//For each unrendered message, create the elements.
+
+		// This should point to messages/*ID of latest message*/
+		var newMessage = ref(db, 'messages/' + groupName + ('/message count' - 1));
+		// Create container for message body.
+		var container = document.createElement('div');
+		container.classList.add('spacer')
+		// Create the message body element.
+		var body = document.createElement('div');
+		container.appendChild(body);
+		body.classList.add('message');
+
+		// Add message content to body.
+		var content = document.createElement('p');
+		content.innerHTML = newMessage.message;
+		body.appendChild(content);
+
+		// Add user's name to end of message.
+		var user = document.createElement('p');
+		user.classList.add('user');
+		user.innerHTML = newMessage.author;
+		body.appendChild(user);
+
+		// Add message as child of messageContainer.
+		document.querySelector('#messageContainer').appendChild(container);
+
+		var chatHistory = document.querySelector('#messageContainer');
+		chatHistory.scrollTop = chatHistory.scrollHeight;
+	}
+});
 
 //  //database format
 // //  {
@@ -84,57 +115,65 @@ signout.addEventListener('click', (e)=>{
 //         //     }
 //         // }
 // //   }
+//var messageCount = 0
+const messageBtn = document.querySelector('#sendButton');
+messageBtn.addEventListener("click", (b)=>{
+	
 
-// const messageBtn = document.querySelector('#sendButton');
-// messageBtn.addEventListener("click", (b)=>{
-//   alert("here I am");
+	// Create new message with meta data and update message count for next message to be sent.
+	//messageCount += 1;
+	const message = document.querySelector('#messageBox').value;
+	const db = getDatabase();
 
-//   //create new message with meta data and update message count for next message to be sent.
-//   messageCount += 1;
-//   const message = document.querySelector('#messageBox').value;
-//   const db = getDatabase();
-//   set(ref(db, 'messages/' + groupName + '/' + messageCount), {
-//     'message': message,
-//     'author': name,
-//     'timestamp': "yesterday" 
-//   });
-//   set(ref(db, 'messages/' + groupName + '/' + messageCount),{
-//       "message count" : messageCount
-//   });
+	set(ref(db, 'messages/' + groupName + '/messageCount'),{
+		"message count" : (messageCount += 1)
+	});
 
-//   //initiate send message
-//   if  (document.getElementById('messageBox').value.trim() != '')
-//     {
-//         // Create JSON message object to send to db.
-//         var newMessage = {
-//             'group':'12345', // Find a way to get group ID (probably assigned by db)
-//             'user':'John Doe', // Test user, in practice pull from account username/id.
-//             'content':document.getElementById('messageBox').value, // Pull text from message box.
-//         };
+	set(ref(db, 'messages/' + groupName + '/' + messageCount), {
+	'message': message,
+	'author': name,
+	'timestamp': "yesterday" 
+	});
 
-//         /**
-//         if (document.getElementById('localUser').checked)
-//         {
-//             newMessage['user'] = 'local'
-//         }
-//         */
+	
 
-//         // Send message object to db.
-//         var messageList = [];
-//         messageList.push(newMessage);
-//         loadMessage(messageList);
+	// //Old sendMessage() function
+	// if  (document.getElementById('messageBox').value.trim() != '')
+	// {
+	// 	// Create JSON message object to send to db.
+	// 	var newMessage = {
+	// 	'group':'12345', // Find a way to get group ID (probably assigned by db)
+	// 	'user':'John Doe', // Test user, in practice pull from account username/id.
+	// 	'content':document.getElementById('messageBox').value, // Pull text from message box.
+	// 	};
 
-//         // Clear previous input from textbox.
-//         document.getElementById("messageInput").reset();
-//     }
-// })
-// document.getElementById('sendButton').addEventListener('keydown', (e)=>
-// {
-//     if (Event.code === 'Enter')
-//     {
-//         sendMessage();
-//     }
+	// 	// Send message object to db.
+	// 	var messageList = [];
+	// 	messageList.push(newMessage);
+	// 	loadMessage(messageList);
+
+	// 	// Clear previous input from textbox.
+	// 	document.getElementById("messageInput").reset();
+	// }
+	
+	// Clear sent message from textbox.
+	document.querySelector('#messageInput').reset();
+})
+// sendButton.addEventListener("click", (b)=>{
+// 	firebase.database().ref('messages/"message count"').on('value', (snapshot)=> {
+// 		console.log(snapshot);
+// 		alert(snapshot);
+// 	})
 // });
+
+
+document.getElementById('sendButton').addEventListener('keydown', (e)=>
+{
+    if (Event.code === 'Enter')
+    {
+        sendMessage();
+    }
+});
 
 
 // /**
