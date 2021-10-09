@@ -19,79 +19,138 @@ for i in range(21, 154):
 # Drops all unnecessary columns
 dating = dating.drop(columns=['height', 'pets', 'income', 'last_online', 'location', 'sign', 'smokes', 'body_type', 'status'])
 # %%
+index = 0
+for response in dating.sex:
+    if response != 'm' and response != 'f' and str(response) != '0':
+        dating = dating.drop(labels = index)
+    index += 1
+# %%
 dating = dating.replace({np.nan: 0, -1: 0})
 # %%
 # Searches for unique responses for one-hot-encoding
-response_type_orientation = []
-for response in dating.orientation:
-    try:
-        if response == np.nan or response == '':
-            pass
-        elif response not in response_type_orientation:
-            response_type_orientation.append(str(response))
-    except:
-        pass
+response_type = []
+for response in dating.religion:
+    if response not in response_type:
+        response_type.append(response)
 
-print(response_type_orientation)
+print(response_type)
 # %%
-response_type_drugs = []
-for response in dating.drugs:
-    try:
-        if response == 'nan' or response == '':
-            pass
-        elif response not in response_type_drugs:
-            response_type_drugs.append(response)
-    except:
-        pass
+# Gets ethnicities from column to become one-hot encoded columns
+columns = []
+for response in dating.ethnicity:
+    if response != 0:
+        response = response.strip().split(', ')
+        for sub_response in response:
+            if sub_response not in columns:
+                columns.append(sub_response)
 
-print(response_type_drugs)
+print(columns)
 # %%
-response_type_age = []
-for response in dating.age:
-    try:
-        if response == 'nan' or response == '':
-            pass
-        elif response not in response_type_age:
-            response_type_age.append(response)
-    except:
-        pass
+# One-hot encodes data in original ethnicity column
+storage_ethnicity = pd.DataFrame()
+for column_name in columns:
+    column = []
+    for response in dating.ethnicity:
+        if response == 0:
+            column.append('0')
+        elif column_name in response:
+            column.append('1')
+        else:
+            column.append('0')
+    if column_name == 'other':
+        storage_ethnicity[column_name + '_ethnicity'] = column
+    else:
+        storage_ethnicity[column_name] = column
 
-print(response_type_age)
+storage_ethnicity.head(20)
 # %%
-response_type_kids = []
-for response in dating.offspring:
-    if response not in response_type_kids:
-        response_type_kids.append(response)
+# Gets languages from speaks to become one-hot encoded columns
+import re 
+columns = []
+for response in dating.speaks:
+    if response == 0:
+        break
+    response = re.sub('[\(\[].*?[\)\]]', '', response)
+    response = response.strip().split(', ')
+    for language in response:
+        language = language.strip()
+        if language not in columns:
+            columns.append(language)
 
-print(response_type_kids)
+print(columns)
+# %%
+# Creates one-hot encoded columns for languages
+storage_speaks = pd.DataFrame()
+for column_name in columns:
+    column = []
+    for response in dating.speaks:
+        if response == 0:
+            column.append('0')
+        elif column_name in response:
+            column.append('1')
+        else:
+            column.append('0')
+    if column_name == 'other':
+        storage_speaks[column_name + '_language'] = column
+    else:
+        storage_speaks[column_name] = column
+
+storage_speaks.head(20)
+# %%
+# Gets religions from column to become one-hot encoded columns
+columns = []
+for response in dating.religion:
+    if response != 0:
+        response = response.strip().split()
+        if response[0] not in columns:
+            columns.append(response[0])
+
+print(columns)
+# %%
+storage_religion = pd.DataFrame()
+for column_name in columns:
+    column = []
+    for response in dating.religion:
+        if response == 0:
+            column.append('0')
+        elif column_name in response:
+            column.append('1')
+        else:
+            column.append('0')
+    if column_name == 'other':
+        storage_religion[column_name + '_religion'] = column
+    else:
+        storage_religion[column_name] = column
+
+storage_religion.head(20)
 # %%
 orientation = (dating.orientation
     .str.replace('straight', '1')
     .str.replace('gay', '2')
     .str.replace('bisexual', '3')
-    .str.replace(' easy on the eyes.  i\'m looking for friends', '0')
     .astype('float'))
 # %%
 drugs = (dating.drugs
     .str.replace('never', '1')
     .str.replace('sometimes', '2')
     .str.replace('often', '3')
-    .str.replace(' and maybe down the line', '4')
     .astype('float'))
 # %%
-age = (dating.age.str.replace('st teachers; the powerfully humble', '0').astype('float'))
+age = dating.age
 # %%
 # Drops columns to be added back in after one-hot encoding
-dating = dating.drop(columns = ['drugs', 'orientation', 'age'])
+dating = dating.drop(columns = ['drugs', 'orientation', 'age', 'speaks', 'ethnicity', 'religion'])
 # %%
 enc = pd.get_dummies(dating)
 print(enc)
 # %%
 enc.head(20)
 # %%
-enc = enc.assign(age = age)
 enc = enc.assign(drugs = drugs)
 enc = enc.assign(orientation = orientation)
+enc = pd.concat([enc, storage_speaks], axis = 1)
+enc = pd.concat([enc, storage_ethnicity], axis = 1)
+enc = pd.concat([enc, storage_religion], axis = 1)
 enc = enc.replace(np.nan, 0)
 # Variable enc has prepped data
 
@@ -101,5 +160,12 @@ classifier = KMeans(n_clusters=8)
 model = classifier.fit(enc)
 
 # %%
-
 enc['Cluster'] = model
+
+# %%
+# Saves model as pkl to be used in site
+import joblib
+
+joblib.dump(model, 'ml_model.pkl')
+
+# %%
