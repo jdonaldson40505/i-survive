@@ -5,7 +5,7 @@ let today = new Date();
 var timeStamp = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear() + ':' + today.getHours() + ':' + today.getMinutes();
 //import { get } from "http";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
-import { getAuth, } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js";
 import { getDatabase, ref, set, get, child, onValue } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js";
 
 const firebaseConfig = {
@@ -22,6 +22,146 @@ appId: "1:251409467344:web:759d25ce597d233620dbd5"
 //   initialize Firiebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
+auth.onAuthStateChanged(function(user) {
+	if (user) {
+	  // User is signed in.
+	  // set listener for message count
+		//const user = auth.currentUser;
+		const uid = user.uid;
+		const db = getDatabase(app);
+		var groupName = -1;
+		var loadedMessages = 0;
+		var messagesRef = ref(db, 'messages/' + groupName);
+		var userRef = ref(db, 'users/');
+		onValue(userRef, (users)=>{
+			var userlist = users;
+			console.log(userlist.val());
+			if(uid != null)
+			{
+				groupName = userlist.val()[uid]['groupName'];
+			}
+		});
+		//var test = ref(db, 'messages/' + groupName + '/message count').val();
+		//alert('testValue = ' + test);
+		onValue(messagesRef, (snapshot) => {
+			// If for some reason the message counter isn't initialized:
+			var messageList = snapshot.val();
+			console.log(messageList);
+			//set(ref(db, 'messages/' + groupName + '/messageCount'), 3); // Reset message count value from wonky bugs
+			if (messageList['messageCount'] === null)
+			{
+				alert('messageCount is null, setting to zero instead.');
+				messageList['messageCount'] = 0;
+				set(ref(db, 'messages/' + groupName + '/messageCount'), 0);
+			}
+
+			if (messageList['messageCount'] > 0)
+			{
+				for (let i = loadedMessages + 1; i <= messageList['messageCount']; i += 1)
+				{
+					console.log('i is currently: ' + i);
+					//alert('i is currently: ' + i)
+					// Create container for message body.
+					var container = document.createElement('div');
+					container.classList.add('spacer')
+					// Create the message body element.
+					var body = document.createElement('div');
+					container.appendChild(body);
+					body.classList.add('message');
+
+					// Add message content to body.
+					var message = document.createElement('p');
+					message.innerHTML = messageList[i]['message'];
+					body.appendChild(message);
+
+					// Add user's name to end of message.
+					var author = document.createElement('p');
+					author.classList.add('user');
+					author.innerHTML = messageList[i]['author'];
+					body.appendChild(author);
+
+					// Add message's timestamp to bottom of message.
+					var time = document.createElement('p');
+					time.classList.add('timeStamp');
+					time.innerHTML = messageList[i]['timestamp'];
+					body.appendChild(time);
+
+					// Add message as child of messageContainer.
+					document.querySelector('#messageContainer').appendChild(container);
+
+					var chatHistory = document.querySelector('#messageContainer');
+					chatHistory.scrollTop = chatHistory.scrollHeight;
+				}
+				loadedMessages = messageList['messageCount'];
+			}
+			//else {alert('message count is zero!');}
+		});
+
+		//  //database format
+		// //  {
+		// //     "groups" : {
+		// //       "groupName" : { 
+		// //         "users" : {
+		// //           "userid" : { //use user id for auth
+		// //             "name" : "don cheedle"
+		// //           }
+		// //         }
+		// //       }
+		// //     },
+		// //     "messages" : {
+		// //       "groupName" : {
+		// //         "message count": 1 add number each message to update sequential Id
+		// //         "sequentialId" : {
+		// //           "author" : "don cheedle", 
+		// //           "message" : "hello",
+		// //           "timestamp" : 777
+		// //         }
+		// //  solve     }
+		// //     }
+		//         // "users" : {
+		//         //     "userid" : {
+		//         //         "groupName": "groupName"
+		//         //         "name": "don cheedle"
+		//         //     }
+		//         // }
+		// //   }
+		//var messageCount = 0
+		const messageBtn = document.querySelector('#sendButton');
+		messageBtn.addEventListener("click", (b)=>{
+			const dbRef = ref(getDatabase());
+			var erase = false;
+			get(child(dbRef, 'messages/' + groupName + '/messageCount')).then((snapshot) => {
+				if (snapshot.exists()) {
+					var messageCount = snapshot.val();
+					// Update number of messages in the conversation.
+					messageCount += 1;
+
+					//alert(document.querySelector('#messageBox').value);
+					var message = document.querySelector('#messageBox').value;
+					set(ref(db, 'messages/' + groupName + '/' + messageCount + '/message'), message);
+					set(ref(db, 'messages/' + groupName + '/' + messageCount + '/author'), 'don cheedle');
+					set(ref(db, 'messages/' + groupName + '/' + messageCount + '/timestamp'), timeStamp);
+					// set(ref(db, 'messages/' + groupName + '/' + messageCount), {
+					// 	'message': document.querySelector('#messageInput').value,
+					// 	'author': 'Don Cheedle',
+					// 	'timestamp': timeStamp
+					// });
+					set(ref(db, 'messages/' + groupName + '/messageCount'), messageCount);
+
+					// Erase message from text bar after sending.
+					document.querySelector('#messageBox').value = '';
+
+				} else {
+					alert('No data avaliable');
+				}
+			});//.catch((error));
+			
+		});
+	} else {
+	// No user is signed in.
+	alert('User not signed in!');
+	}
+});
 //const userId = auth.currentUser.uid;
 const database = getDatabase(app);
 
@@ -50,136 +190,7 @@ signout.addEventListener('click', (e)=>{
 });
 
 
-// set listener for message count
-const user = auth.currentUser;
-const uid = user.uid;
-const db = getDatabase(app);
-var loadedMessages = 0;
-var messagesRef = ref(db, 'messages/' + groupName);
-var userRef = ref(db, 'users/');
-// onValue(userRef, (users)=>{
-// 	var userlist = users;
-// 	if(uid != null)
-// 	{
 
-// 	}
-// });
-//var test = ref(db, 'messages/' + groupName + '/message count').val();
-//alert('testValue = ' + test);
-onValue(messagesRef, (snapshot) => {
-	// If for some reason the message counter isn't initialized:
-	var messageList = snapshot.val();
-	console.log(messageList);
-	//set(ref(db, 'messages/' + groupName + '/messageCount'), 3); // Reset message count value from wonky bugs
-	if (messageList['messageCount'] === null)
-	{
-		alert('messageCount is null, setting to zero instead.');
-		messageList['messageCount'] = 0;
-		set(ref(db, 'messages/' + groupName + '/messageCount'), 0);
-	}
-
-	if (messageList['messageCount'] > 0)
-	{
-		for (let i = loadedMessages + 1; i <= messageList['messageCount']; i += 1)
-		{
-			console.log('i is currently: ' + i);
-			//alert('i is currently: ' + i)
-			// Create container for message body.
-			var container = document.createElement('div');
-			container.classList.add('spacer')
-			// Create the message body element.
-			var body = document.createElement('div');
-			container.appendChild(body);
-			body.classList.add('message');
-
-			// Add message content to body.
-			var message = document.createElement('p');
-			message.innerHTML = messageList[i]['message'];
-			body.appendChild(message);
-
-			// Add user's name to end of message.
-			var author = document.createElement('p');
-			author.classList.add('user');
-			author.innerHTML = messageList[i]['author'];
-			body.appendChild(author);
-
-			// Add message's timestamp to bottom of message.
-			var time = document.createElement('p');
-			time.classList.add('timeStamp');
-			time.innerHTML = messageList[i]['timestamp'];
-			body.appendChild(time);
-
-			// Add message as child of messageContainer.
-			document.querySelector('#messageContainer').appendChild(container);
-
-			var chatHistory = document.querySelector('#messageContainer');
-			chatHistory.scrollTop = chatHistory.scrollHeight;
-		}
-		loadedMessages = messageList['messageCount'];
-	}
-	//else {alert('message count is zero!');}
-});
-
-//  //database format
-// //  {
-// //     "groups" : {
-// //       "groupName" : { 
-// //         "users" : {
-// //           "userid" : { //use user id for auth
-// //             "name" : "don cheedle"
-// //           }
-// //         }
-// //       }
-// //     },
-// //     "messages" : {
-// //       "groupName" : {
-// //         "message count": 1 add number each message to update sequential Id
-// //         "sequentialId" : {
-// //           "author" : "don cheedle", 
-// //           "message" : "hello",
-// //           "timestamp" : 777
-// //         }
-// //  solve     }
-// //     }
-//         // "users" : {
-//         //     "userid" : {
-//         //         "groupName": "groupName"
-//         //         "name": "don cheedle"
-//         //     }
-//         // }
-// //   }
-//var messageCount = 0
-const messageBtn = document.querySelector('#sendButton');
-messageBtn.addEventListener("click", (b)=>{
-	const dbRef = ref(getDatabase());
-	var erase = false;
-	get(child(dbRef, 'messages/' + groupName + '/messageCount')).then((snapshot) => {
-		if (snapshot.exists()) {
-			var messageCount = snapshot.val();
-			// Update number of messages in the conversation.
-			messageCount += 1;
-
-			//alert(document.querySelector('#messageBox').value);
-			var message = document.querySelector('#messageBox').value;
-			set(ref(db, 'messages/' + groupName + '/' + messageCount + '/message'), message);
-			set(ref(db, 'messages/' + groupName + '/' + messageCount + '/author'), 'don cheedle');
-			set(ref(db, 'messages/' + groupName + '/' + messageCount + '/timestamp'), timeStamp);
-			// set(ref(db, 'messages/' + groupName + '/' + messageCount), {
-			// 	'message': document.querySelector('#messageInput').value,
-			// 	'author': 'Don Cheedle',
-			// 	'timestamp': timeStamp
-			// });
-			set(ref(db, 'messages/' + groupName + '/messageCount'), messageCount);
-
-			// Erase message from text bar after sending.
-			document.querySelector('#messageBox').value = '';
-
-		} else {
-			alert('No data avaliable');
-		}
-	});//.catch((error));
-	
-});
 	// // Create new message with meta data and update message count for next message to be sent.
 	// //messageCount += 1;
 	// const message = document.querySelector('#messageBox').value;
