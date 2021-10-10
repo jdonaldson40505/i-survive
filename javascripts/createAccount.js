@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
-import { getAuth, signOut} from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js";
+import { getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js";
 import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js";
 
 const firebaseConfig = {
@@ -17,14 +17,24 @@ const auth = getAuth();
 const db = getDatabase(app);
 
 const groupid = 0;
-
 const sub = document.querySelector('#subBtn');
 sub.addEventListener('click', (e)=>{
     const fname = document.getElementById('fname').value;
     const lname = document.getElementById('lname').value;
-    set(ref(db, 'users/2'), {
-        'user': fname+ ' ' + lname,
-        'groupName': groupid 
-        });
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/firebase.User
+          const uid = user.uid;
+          set(ref(db, 'users/'+ uid), {
+            'user': fname+ ' ' + lname,
+            'groupName': groupid 
+            });
+          // ...
+        } else {
+          // User is signed out
+          // ...
+        }
     document.location.href('client/messenger.html');
+    });
 }); 
