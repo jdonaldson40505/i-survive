@@ -37,7 +37,7 @@ signupBtn.addEventListener("click", (e)=>{
       {
         createUserWithEmailAndPassword(auth,email,password);
         // const user = userCredential.user;
-        document.location.href = 'client/messenger.html';
+        document.location.href = 'createAccount.html';
       }
       else{
         alert('passwords do not match');
