@@ -3,6 +3,8 @@ import pandas as pd
 from sklearn.cluster import KMeans
 import pandas as pd
 import numpy as np
+import pickle
+
 
 dating = pd.read_csv('dating_profiles.csv')
 # %%
@@ -156,6 +158,8 @@ model = classifier.fit(enc)
 
 # %%
 # Saves model as pkl to be used in site
-import joblib
 
-joblib.dump(model, 'ml_model.pkl')
+Pkl_Filename = "group_model"  
+
+with open(Pkl_Filename, 'wb') as file:  
+    pickle.dump(model, file)

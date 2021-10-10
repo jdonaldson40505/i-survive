@@ -1,3 +1,4 @@
+//import { group } from "console";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
 import { getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js";
 import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js";
@@ -21,16 +22,27 @@ const sub = document.querySelector('#subBtn');
 sub.addEventListener('click', (e)=>{
     const fname = document.getElementById('fname').value;
     const lname = document.getElementById('lname').value;
+    //get userid
     onAuthStateChanged(auth, (user) => {
         if (user) {
           // User is signed in, see docs for a list of available properties
           // https://firebase.google.com/docs/reference/js/firebase.User
           const uid = user.uid;
+
+          
+
+
+          //set user id in db
           groupid = Math.floor(Math.random()*8);
           set(ref(db, 'users/'+ uid), {
             'user': fname+ ' ' + lname,
             'groupName': groupid 
             });
+          set(ref(db, 'groups/' +groupid+'/users/'+fname+ ' ' + lname+'/'),{
+            
+              'uid': uid
+            
+          });
           // ...
         } else {
           // User is signed out
@@ -39,3 +51,4 @@ sub.addEventListener('click', (e)=>{
     //document.location.href('client/messenger.html');
     });
 }); 
+
