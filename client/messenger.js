@@ -1,10 +1,12 @@
 /**
  * All functions related to the messaging functionality. 
  */
+let today = new Date();
+var timeStamp = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear() + ':' + today.getHours() + ':' + today.getMinutes();
 //import { get } from "http";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
 import { getAuth, signOut} from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js";
-import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js";
+import { getDatabase, ref, set, get, child, onValue } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyCDrtrzP-Tf-VkA4aKFQjIkUcNYduxZmJQ",
@@ -44,65 +46,67 @@ const signout = document.querySelector('#signOut');
 signout.addEventListener('click', (e)=>{
    auth.signOut();
    document.location.href='../Hackathonn index.html';
-})
-
+});
 
 
 // set listener for message count
 const db = getDatabase(app);
-var messageCountPath = ref(db, 'messages/' + groupName + '/message count');
-var test = ref(db, 'messages/' + groupName + '/message count').val();
-alert('testValue = ' + test);
-onValue(messageCountPath, (snapshot) => {
-	//console.log(snapshot)
-	//alert(snapshot.val())
-	if (snapshot.val() === null)
+var loadedMessages = 0;
+var messagesRef = ref(db, 'messages/' + groupName);
+//var test = ref(db, 'messages/' + groupName + '/message count').val();
+//alert('testValue = ' + test);
+onValue(messagesRef, (snapshot) => {
+	// If for some reason the message counter isn't initialized:
+	var messageList = snapshot.val();
+	console.log(messageList);
+	//set(ref(db, 'messages/' + groupName + '/messageCount'), 3); // Reset message count value from wonky bugs
+	if (messageList['messageCount'] === null)
 	{
-		alert('value is null, setting to zero.');
-		messageCount = 0;
-		set(ref(db, 'messages/' + groupName + '/message count'), messageCount);
+		alert('messageCount is null, setting to zero instead.');
+		messageList['messageCount'] = 0;
+		set(ref(db, 'messages/' + groupName + '/messageCount'), 0);
 	}
-	messageCount = snapshot.val();
-	alert('messageCount = ' + messageCount);
-	if (messageCount > 0) {
-		for (let i = 0; i <= messageCount; i++)
+
+	if (messageList['messageCount'] > 0)
+	{
+		for (let i = loadedMessages + 1; i <= messageList['messageCount']; i += 1)
 		{
-			var messageRef = ref(db, 'messages/' + groupName + '/message count');
-			
+			console.log('i is currently: ' + i);
+			//alert('i is currently: ' + i)
+			// Create container for message body.
+			var container = document.createElement('div');
+			container.classList.add('spacer')
+			// Create the message body element.
+			var body = document.createElement('div');
+			container.appendChild(body);
+			body.classList.add('message');
+
+			// Add message content to body.
+			var message = document.createElement('p');
+			message.innerHTML = messageList[i]['message'];
+			body.appendChild(message);
+
+			// Add user's name to end of message.
+			var author = document.createElement('p');
+			author.classList.add('user');
+			author.innerHTML = messageList[i]['author'];
+			body.appendChild(author);
+
+			// Add message's timestamp to bottom of message.
+			var time = document.createElement('p');
+			time.classList.add('timeStamp');
+			time.innerHTML = messageList[i]['timestamp'];
+			body.appendChild(time);
+
+			// Add message as child of messageContainer.
+			document.querySelector('#messageContainer').appendChild(container);
+
+			var chatHistory = document.querySelector('#messageContainer');
+			chatHistory.scrollTop = chatHistory.scrollHeight;
 		}
-		//For each unrendered message, create the elements bla bla bla.
-
-		// This should point to messages/*ID of latest message*/
-		var newMessage = ref(db, 'messages/' + groupName + ('/message count' - 1));
-		// Create container for message body.
-		var container = document.createElement('div');
-		container.classList.add('spacer')
-		// Create the message body element.
-		var body = document.createElement('div');
-		container.appendChild(body);
-		body.classList.add('message');
-
-		// Add message content to body.
-		var content = document.createElement('p');
-		content.innerHTML = newMessage.message;
-		body.appendChild(content);
-
-		// Add user's name to end of message.
-		var user = document.createElement('p');
-		user.classList.add('user');
-		user.innerHTML = newMessage.author;
-		body.appendChild(user);
-
-		// Add message as child of messageContainer.
-		document.querySelector('#messageContainer').appendChild(container);
-
-		var chatHistory = document.querySelector('#messageContainer');
-		chatHistory.scrollTop = chatHistory.scrollHeight;
+		loadedMessages = messageList['messageCount'];
 	}
-<<<<<<< HEAD
 	//else {alert('message count is zero!');}
-=======
->>>>>>> c4fc1c3151b6b9a4c67a90e17164496e2c7edaaa
 });
 
 //  //database format
@@ -124,7 +128,7 @@ onValue(messageCountPath, (snapshot) => {
 // //           "message" : "hello",
 // //           "timestamp" : 777
 // //         }
-// //       }
+// //  solve     }
 // //     }
 //         // "users" : {
 //         //     "userid" : {
@@ -136,25 +140,49 @@ onValue(messageCountPath, (snapshot) => {
 //var messageCount = 0
 const messageBtn = document.querySelector('#sendButton');
 messageBtn.addEventListener("click", (b)=>{
+	const dbRef = ref(getDatabase());
+	var erase = false;
+	get(child(dbRef, 'messages/' + groupName + '/messageCount')).then((snapshot) => {
+		if (snapshot.exists()) {
+			var messageCount = snapshot.val();
+			// Update number of messages in the conversation.
+			messageCount += 1;
+
+			//alert(document.querySelector('#messageBox').value);
+			var message = document.querySelector('#messageBox').value;
+			set(ref(db, 'messages/' + groupName + '/' + messageCount + '/message'), message);
+			set(ref(db, 'messages/' + groupName + '/' + messageCount + '/author'), 'don cheedle');
+			set(ref(db, 'messages/' + groupName + '/' + messageCount + '/timestamp'), timeStamp);
+			// set(ref(db, 'messages/' + groupName + '/' + messageCount), {
+			// 	'message': document.querySelector('#messageInput').value,
+			// 	'author': 'Don Cheedle',
+			// 	'timestamp': timeStamp
+			// });
+			set(ref(db, 'messages/' + groupName + '/messageCount'), messageCount);
+
+			// Erase message from text bar after sending.
+			document.querySelector('#messageBox').value = '';
+
+		} else {
+			alert('No data avaliable');
+		}
+	});//.catch((error));
 	
-<<<<<<< HEAD
+});
+	// // Create new message with meta data and update message count for next message to be sent.
+	// //messageCount += 1;
+	// const message = document.querySelector('#messageBox').value;
+	// const db = getDatabase();
+	// var messageCount = ref(db, 'messages/' + groupName + '/message count').val();
+	// set(ref(db, 'messages/' + groupName + '/messageCount'), messageCount += 1);
 
-	// Create new message with meta data and update message count for next message to be sent.
-	//messageCount += 1;
-	const message = document.querySelector('#messageBox').value;
-	const db = getDatabase();
-	var messageCount = ref(db, 'messages/' + groupName + '/message count').val();
-	set(ref(db, 'messages/' + groupName + '/messageCount'),{
-		"message count" : (messageCount += 1)
-	});
+	// set(ref(db, 'messages/' + groupName + '/' + messageCount), {
+	// 'message': message,
+	// 'author': name,
+	// 'timestamp': "yesterday" 
+	// });
 
-	set(ref(db, 'messages/' + groupName + '/' + messageCount), {
-	'message': message,
-	'author': name,
-	'timestamp': "yesterday" 
-	});
-
-	
+	// var messageCount = ref(db, 'messages/' + groupName + '/message count').val();	
 
 	// //Old sendMessage() function
 	// if  (document.getElementById('messageBox').value.trim() != '')
@@ -176,55 +204,8 @@ messageBtn.addEventListener("click", (b)=>{
 	// }
 	
 	// Clear sent message from textbox.
-	document.querySelector('#messageInput').reset();
-})
-// sendButton.addEventListener("click", (b)=>{
-// 	firebase.database().ref('messages/"message count"').on('value', (snapshot)=> {
-// 		console.log(snapshot);
-// 		alert(snapshot);
-// 	})
-// });
-=======
-
-	// Create new message with meta data and update message count for next message to be sent.
-	//messageCount += 1;
-	const message = document.querySelector('#messageBox').value;
-	const db = getDatabase();
-
-	set(ref(db, 'messages/' + groupName + '/messageCount'),{
-		"message count" : (messageCount += 1)
-	});
-
-	set(ref(db, 'messages/' + groupName + '/' + messageCount), {
-	'message': message,
-	'author': name,
-	'timestamp': "yesterday" 
-	});
-
-	
-
-	// //Old sendMessage() function
-	// if  (document.getElementById('messageBox').value.trim() != '')
-	// {
-	// 	// Create JSON message object to send to db.
-	// 	var newMessage = {
-	// 	'group':'12345', // Find a way to get group ID (probably assigned by db)
-	// 	'user':'John Doe', // Test user, in practice pull from account username/id.
-	// 	'content':document.getElementById('messageBox').value, // Pull text from message box.
-	// 	};
-
-	// 	// Send message object to db.
-	// 	var messageList = [];
-	// 	messageList.push(newMessage);
-	// 	loadMessage(messageList);
-
-	// 	// Clear previous input from textbox.
-	// 	document.getElementById("messageInput").reset();
-	// }
-	
-	// Clear sent message from textbox.
-	document.querySelector('#messageInput').reset();
-})
+	//document.getElementById('messageBox').value = '';
+//});
 // sendButton.addEventListener("click", (b)=>{
 // 	firebase.database().ref('messages/"message count"').on('value', (snapshot)=> {
 // 		console.log(snapshot);
@@ -240,7 +221,6 @@ document.getElementById('sendButton').addEventListener('keydown', (e)=>
         sendMessage();
     }
 });
->>>>>>> c4fc1c3151b6b9a4c67a90e17164496e2c7edaaa
 
 
 document.getElementById('sendButton').addEventListener('keydown', (e)=>

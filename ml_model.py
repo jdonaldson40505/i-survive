@@ -9,6 +9,8 @@ import pickle
 dating = pd.read_csv('dating_profiles.csv')
 # %%
 dating.info()
+# %% 
+dating.columns
 # %%
 dating.head(20)
 # %%
@@ -59,10 +61,7 @@ for column_name in columns:
             column.append('1')
         else:
             column.append('0')
-    if column_name == 'other':
-        storage_ethnicity[column_name + '_ethnicity'] = column
-    else:
-        storage_ethnicity[column_name] = column
+    storage_ethnicity['ethnicity_' + column_name] = column
 
 storage_ethnicity.head(20)
 # %%
@@ -92,10 +91,7 @@ for column_name in columns:
             column.append('1')
         else:
             column.append('0')
-    if column_name == 'other':
-        storage_speaks[column_name + '_speaks'] = column
-    else:
-        storage_speaks[column_name] = column
+    storage_speaks['speaks_' + column_name] = column
 
 storage_speaks.head(20)
 # %%
@@ -119,10 +115,7 @@ for column_name in columns:
             column.append('1')
         else:
             column.append('0')
-    if column_name == 'other':
-        storage_religion[column_name + '_religion'] = column
-    else:
-        storage_religion[column_name] = column
+    storage_religion['religion_' + column_name] = column
 
 storage_religion.head(20)
 # %%
@@ -155,7 +148,9 @@ enc = pd.concat([enc, storage_ethnicity], axis = 1)
 enc = pd.concat([enc, storage_religion], axis = 1)
 enc = enc.replace(np.nan, 0)
 # Variable enc has prepped data
-
+# %%
+for col in enc.columns:
+    print(col)
 # %%
 # Model--can be modified as needed
 classifier = KMeans(n_clusters=8)
