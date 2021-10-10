@@ -92,6 +92,12 @@ onValue(messagesRef, (snapshot) => {
 			author.innerHTML = messageList[i]['author'];
 			body.appendChild(author);
 
+			// Add message's timestamp to bottom of message.
+			var time = document.createElement('p');
+			time.classList.add('timeStamp');
+			time.innerHTML = messageList[i]['timestamp'];
+			body.appendChild(time);
+
 			// Add message as child of messageContainer.
 			document.querySelector('#messageContainer').appendChild(container);
 
