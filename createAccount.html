@@ -2,6 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="createAccount.css">
+    <script type='module' src="javascripts/createAccount.js"></script> 
 <title>Account Creation</title>
 </head>
 
@@ -11,9 +12,9 @@
     <form action="/action_page.php">
         <h3>Name</h3>
         <label for="fname">First name:</label><br>
-        <input type="text" id="fname" name="fname" value=""><br>
-        <label for="lname">Last name:</label><br>
-        <input type="text" id="lname" name="lname" value=""><br><br>
+        <input id="fname" type="text" id="fname" name="fname" value=""><br>
+        <label  for="lname">Last name:</label><br>
+        <input id='lname' type="text" id="lname" name="lname" value=""><br><br>
         
       
 
@@ -50,7 +51,7 @@
         <input type="checkbox" id="tag10" name="tag10" value="tag10">
         <label for="tag10"> tag10</label>
       <p>Please double check since there is no changing this information once you hit submit</p>
-        <input type="submit" value="Submit">
+        <button id='subBtn' type="button">Submit</button>
     </form> 
 </div>
 </body>

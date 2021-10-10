@@ -49,7 +49,6 @@ signout.addEventListener('click', (e)=>{
 });
 
 
-
 // set listener for message count
 const db = getDatabase(app);
 var loadedMessages = 0;
@@ -101,6 +100,7 @@ onValue(messagesRef, (snapshot) => {
 		}
 		loadedMessages = messageList['messageCount'];
 	}
+	//else {alert('message count is zero!');}
 });
 
 //  //database format
@@ -206,6 +206,15 @@ messageBtn.addEventListener("click", (b)=>{
 // 		alert(snapshot);
 // 	})
 // });
+
+
+document.getElementById('sendButton').addEventListener('keydown', (e)=>
+{
+    if (Event.code === 'Enter')
+    {
+        sendMessage();
+    }
+});
 
 
 document.getElementById('sendButton').addEventListener('keydown', (e)=>
