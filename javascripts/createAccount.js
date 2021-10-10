@@ -25,12 +25,7 @@ sub.addEventListener('click', (e)=>{
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
         if (user) {
-          // User is signed in, see docs for a list of available properties
-          // https://firebase.google.com/docs/reference/js/firebase.User
           const uid = user.uid;
-
-          
-
 
           //set user id in db
           groupid = Math.floor(Math.random()*8);
@@ -47,6 +42,7 @@ sub.addEventListener('click', (e)=>{
           window.location.href='client/messenger.html';
         } 
         else {
+          
           // User is signed out
           window.location.href='client/messenger.html';
         }
