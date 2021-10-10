@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js";
 import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js";
 
 const firebaseConfig = {
@@ -25,8 +25,21 @@ signupBtn.addEventListener('click', (e) =>{
     const email = document.getElementById('email').value;
     // log.console(email);
     const password = document.getElementById('password').value;
-    signInWithEmailAndPassword(auth,email,password).then(token =>{
-        document.location.href = "client/messenger.html";
+    signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    onAuthStateChanged(auth,(user)=>{
+      if (user){
+      document.location.href = "client/messenger.html";
+      }
     })
+    
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+  });
     
 })

@@ -39,7 +39,13 @@ signupBtn.addEventListener("click", (e)=>{
 
           // Signed in 
           const user = userCredential.user;
+          onAuthStateChanged(auth,(user)=>{
+            if(user){
+              const uid = user.uid;
           document.location.href = 'createAccount.html';
+
+            }
+          })
           // ...
         })
         .catch((error) => {
