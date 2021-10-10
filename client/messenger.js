@@ -48,15 +48,29 @@ signout.addEventListener('click', (e)=>{
 
 
 
-
 // set listener for message count
 const db = getDatabase(app);
 var messageCountPath = ref(db, 'messages/' + groupName + '/message count');
+var test = ref(db, 'messages/' + groupName + '/message count').val();
+alert('testValue = ' + test);
 onValue(messageCountPath, (snapshot) => {
-	alert(snapshot.val())
-	var messageCount = snapshot.val();
+	//console.log(snapshot)
+	//alert(snapshot.val())
+	if (snapshot.val() === null)
+	{
+		alert('value is null, setting to zero.');
+		messageCount = 0;
+		set(ref(db, 'messages/' + groupName + '/message count'), messageCount);
+	}
+	messageCount = snapshot.val();
+	alert('messageCount = ' + messageCount);
 	if (messageCount > 0) {
-		//For each unrendered message, create the elements.
+		for (let i = 0; i <= messageCount; i++)
+		{
+			var messageRef = ref(db, 'messages/' + groupName + '/message count');
+			
+		}
+		//For each unrendered message, create the elements bla bla bla.
 
 		// This should point to messages/*ID of latest message*/
 		var newMessage = ref(db, 'messages/' + groupName + ('/message count' - 1));
@@ -85,6 +99,10 @@ onValue(messageCountPath, (snapshot) => {
 		var chatHistory = document.querySelector('#messageContainer');
 		chatHistory.scrollTop = chatHistory.scrollHeight;
 	}
+<<<<<<< HEAD
+	//else {alert('message count is zero!');}
+=======
+>>>>>>> c4fc1c3151b6b9a4c67a90e17164496e2c7edaaa
 });
 
 //  //database format
@@ -119,6 +137,54 @@ onValue(messageCountPath, (snapshot) => {
 const messageBtn = document.querySelector('#sendButton');
 messageBtn.addEventListener("click", (b)=>{
 	
+<<<<<<< HEAD
+
+	// Create new message with meta data and update message count for next message to be sent.
+	//messageCount += 1;
+	const message = document.querySelector('#messageBox').value;
+	const db = getDatabase();
+	var messageCount = ref(db, 'messages/' + groupName + '/message count').val();
+	set(ref(db, 'messages/' + groupName + '/messageCount'),{
+		"message count" : (messageCount += 1)
+	});
+
+	set(ref(db, 'messages/' + groupName + '/' + messageCount), {
+	'message': message,
+	'author': name,
+	'timestamp': "yesterday" 
+	});
+
+	
+
+	// //Old sendMessage() function
+	// if  (document.getElementById('messageBox').value.trim() != '')
+	// {
+	// 	// Create JSON message object to send to db.
+	// 	var newMessage = {
+	// 	'group':'12345', // Find a way to get group ID (probably assigned by db)
+	// 	'user':'John Doe', // Test user, in practice pull from account username/id.
+	// 	'content':document.getElementById('messageBox').value, // Pull text from message box.
+	// 	};
+
+	// 	// Send message object to db.
+	// 	var messageList = [];
+	// 	messageList.push(newMessage);
+	// 	loadMessage(messageList);
+
+	// 	// Clear previous input from textbox.
+	// 	document.getElementById("messageInput").reset();
+	// }
+	
+	// Clear sent message from textbox.
+	document.querySelector('#messageInput').reset();
+})
+// sendButton.addEventListener("click", (b)=>{
+// 	firebase.database().ref('messages/"message count"').on('value', (snapshot)=> {
+// 		console.log(snapshot);
+// 		alert(snapshot);
+// 	})
+// });
+=======
 
 	// Create new message with meta data and update message count for next message to be sent.
 	//messageCount += 1;
@@ -165,6 +231,16 @@ messageBtn.addEventListener("click", (b)=>{
 // 		alert(snapshot);
 // 	})
 // });
+
+
+document.getElementById('sendButton').addEventListener('keydown', (e)=>
+{
+    if (Event.code === 'Enter')
+    {
+        sendMessage();
+    }
+});
+>>>>>>> c4fc1c3151b6b9a4c67a90e17164496e2c7edaaa
 
 
 document.getElementById('sendButton').addEventListener('keydown', (e)=>
