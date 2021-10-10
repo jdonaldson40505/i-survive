@@ -47,7 +47,6 @@ signout.addEventListener('click', (e)=>{
 })
 
 
-var messageCount;
 
 // set listener for message count
 const db = getDatabase(app);
@@ -100,7 +99,10 @@ onValue(messageCountPath, (snapshot) => {
 		var chatHistory = document.querySelector('#messageContainer');
 		chatHistory.scrollTop = chatHistory.scrollHeight;
 	}
+<<<<<<< HEAD
 	//else {alert('message count is zero!');}
+=======
+>>>>>>> c4fc1c3151b6b9a4c67a90e17164496e2c7edaaa
 });
 
 //  //database format
@@ -135,6 +137,7 @@ onValue(messageCountPath, (snapshot) => {
 const messageBtn = document.querySelector('#sendButton');
 messageBtn.addEventListener("click", (b)=>{
 	
+<<<<<<< HEAD
 
 	// Create new message with meta data and update message count for next message to be sent.
 	//messageCount += 1;
@@ -181,6 +184,63 @@ messageBtn.addEventListener("click", (b)=>{
 // 		alert(snapshot);
 // 	})
 // });
+=======
+
+	// Create new message with meta data and update message count for next message to be sent.
+	//messageCount += 1;
+	const message = document.querySelector('#messageBox').value;
+	const db = getDatabase();
+
+	set(ref(db, 'messages/' + groupName + '/messageCount'),{
+		"message count" : (messageCount += 1)
+	});
+
+	set(ref(db, 'messages/' + groupName + '/' + messageCount), {
+	'message': message,
+	'author': name,
+	'timestamp': "yesterday" 
+	});
+
+	
+
+	// //Old sendMessage() function
+	// if  (document.getElementById('messageBox').value.trim() != '')
+	// {
+	// 	// Create JSON message object to send to db.
+	// 	var newMessage = {
+	// 	'group':'12345', // Find a way to get group ID (probably assigned by db)
+	// 	'user':'John Doe', // Test user, in practice pull from account username/id.
+	// 	'content':document.getElementById('messageBox').value, // Pull text from message box.
+	// 	};
+
+	// 	// Send message object to db.
+	// 	var messageList = [];
+	// 	messageList.push(newMessage);
+	// 	loadMessage(messageList);
+
+	// 	// Clear previous input from textbox.
+	// 	document.getElementById("messageInput").reset();
+	// }
+	
+	// Clear sent message from textbox.
+	document.querySelector('#messageInput').reset();
+})
+// sendButton.addEventListener("click", (b)=>{
+// 	firebase.database().ref('messages/"message count"').on('value', (snapshot)=> {
+// 		console.log(snapshot);
+// 		alert(snapshot);
+// 	})
+// });
+
+
+document.getElementById('sendButton').addEventListener('keydown', (e)=>
+{
+    if (Event.code === 'Enter')
+    {
+        sendMessage();
+    }
+});
+>>>>>>> c4fc1c3151b6b9a4c67a90e17164496e2c7edaaa
 
 
 document.getElementById('sendButton').addEventListener('keydown', (e)=>
