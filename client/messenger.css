@@ -38,6 +38,7 @@ body {
     text-align: left;
     vertical-align: middle;
     width: 35%;
+    position: relative;
 }
 
 .local {
@@ -105,6 +106,17 @@ body {
 .user {
     text-justify: right;
     text-align: right;
+    vertical-align: bottom;
+    font-size: smaller;
+
+    position:absolute;
+    right:10px;
+    bottom:0px;
+}
+
+.timeStamp {
+    text-justify: left;
+    text-align: left;
     vertical-align: bottom;
     font-size: smaller;
 }
