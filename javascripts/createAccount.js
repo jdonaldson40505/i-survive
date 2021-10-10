@@ -16,7 +16,7 @@ const auth = getAuth();
 //const userId = auth.currentUser.uid;
 const db = getDatabase(app);
 
-const groupid = 0;
+var groupid = 0;
 const sub = document.querySelector('#subBtn');
 sub.addEventListener('click', (e)=>{
     const fname = document.getElementById('fname').value;
@@ -26,6 +26,7 @@ sub.addEventListener('click', (e)=>{
           // User is signed in, see docs for a list of available properties
           // https://firebase.google.com/docs/reference/js/firebase.User
           const uid = user.uid;
+          groupid = Math.floor(Math.random()*8);
           set(ref(db, 'users/'+ uid), {
             'user': fname+ ' ' + lname,
             'groupName': groupid 
@@ -35,6 +36,6 @@ sub.addEventListener('click', (e)=>{
           // User is signed out
           // ...
         }
-    document.location.href('client/messenger.html');
+    //document.location.href('client/messenger.html');
     });
 }); 
