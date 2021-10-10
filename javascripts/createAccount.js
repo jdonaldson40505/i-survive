@@ -22,10 +22,8 @@ const sub = document.querySelector('#subBtn');
 sub.addEventListener('click', (e)=>{
     const fname = document.getElementById('fname').value;
     const lname = document.getElementById('lname').value;
-    alert("we are here");
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
-      alert('now were here');
         if (user) {
           // User is signed in, see docs for a list of available properties
           // https://firebase.google.com/docs/reference/js/firebase.User
@@ -35,7 +33,6 @@ sub.addEventListener('click', (e)=>{
 
 
           //set user id in db
-          alert('now here');
           groupid = Math.floor(Math.random()*8);
           set(ref(db, 'users/'+ uid), {
             'user': fname+ ' ' + lname,
@@ -50,7 +47,6 @@ sub.addEventListener('click', (e)=>{
           window.location.href='client/messenger.html';
         } 
         else {
-          alert(user);
           // User is signed out
           window.location.href='client/messenger.html';
         }

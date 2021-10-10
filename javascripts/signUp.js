@@ -35,7 +35,18 @@ signupBtn.addEventListener("click", (e)=>{
     {
       if(password == cPassword)
       {
-        createUserWithEmailAndPassword(auth,email,password);
+        createUserWithEmailAndPassword(auth,email,password).then((userCredential) => {
+
+          // Signed in 
+          const user = userCredential.user;
+          document.location.href = 'createAccount.html';
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // ..
+        });
         // const user = userCredential.user;
         document.location.href = 'createAccount.html';
       }

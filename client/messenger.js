@@ -5,7 +5,7 @@ let today = new Date();
 var timeStamp = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear() + ':' + today.getHours() + ':' + today.getMinutes();
 //import { get } from "http";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
-import { getAuth, signOut} from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js";
+import { getAuth, } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js";
 import { getDatabase, ref, set, get, child, onValue } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js";
 
 const firebaseConfig = {
@@ -28,7 +28,7 @@ const database = getDatabase(app);
 // get user info 
 // const dbref = ref(getDatabase());
 // const name = setProfileInfo('name');
-const groupName = 0;//setProfileInfo('groupName');
+//const groupName = 0;//setProfileInfo('groupName');
 // function setProfileInfo(item){
 // 	get(child(dbref, `users/` + userId + "/" + item)).then((snapshot) => {
 // 		if (snapshot.exists()) {
@@ -41,6 +41,7 @@ const groupName = 0;//setProfileInfo('groupName');
 // 	});
 // }
 
+
 // log out user.
 const signout = document.querySelector('#signOut');
 signout.addEventListener('click', (e)=>{
@@ -50,9 +51,19 @@ signout.addEventListener('click', (e)=>{
 
 
 // set listener for message count
+const user = auth.currentUser;
+const uid = user.uid;
 const db = getDatabase(app);
 var loadedMessages = 0;
 var messagesRef = ref(db, 'messages/' + groupName);
+var userRef = ref(db, 'users/');
+// onValue(userRef, (users)=>{
+// 	var userlist = users;
+// 	if(uid != null)
+// 	{
+
+// 	}
+// });
 //var test = ref(db, 'messages/' + groupName + '/message count').val();
 //alert('testValue = ' + test);
 onValue(messagesRef, (snapshot) => {

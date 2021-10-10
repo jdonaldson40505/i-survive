@@ -25,7 +25,6 @@ signupBtn.addEventListener('click', (e) =>{
     const email = document.getElementById('email').value;
     // log.console(email);
     const password = document.getElementById('password').value;
-    alert(email, password);
     signInWithEmailAndPassword(auth,email,password).then(token =>{
         document.location.href = "client/messenger.html";
     })
