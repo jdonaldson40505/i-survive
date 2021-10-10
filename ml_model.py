@@ -91,7 +91,7 @@ for column_name in columns:
         else:
             column.append('0')
     if column_name == 'other':
-        storage_speaks[column_name + '_language'] = column
+        storage_speaks[column_name + '_speaks'] = column
     else:
         storage_speaks[column_name] = column
 
@@ -160,12 +160,7 @@ classifier = KMeans(n_clusters=8)
 model = classifier.fit(enc)
 
 # %%
-enc['Cluster'] = model
-
-# %%
 # Saves model as pkl to be used in site
 import joblib
 
 joblib.dump(model, 'ml_model.pkl')
-
-# %%
